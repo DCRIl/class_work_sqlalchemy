@@ -3,6 +3,7 @@ from data import db_session
 from data.users import User
 from data.jobs import Jobs
 from forms.user import RegisterForm, LoginForm
+from forms.jobs import JobsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
@@ -27,7 +28,7 @@ def index():
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -64,6 +65,24 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+@app.route('/jobs', methods=['GET', 'POST'])
+@login_required
+def add_news():
+    form = JobsForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        jobs = Jobs()
+        jobs.job = form.title.data
+        jobs.content = form.content.data
+        jobs.collaborators = form.collaborators.data
+        jobs.is_finished = form.is_finished.data
+        db_sess.add(jobs)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('jobs.html', title='Добавление новости',
+                           form=form)
+
 
 
 
