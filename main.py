@@ -6,7 +6,6 @@ from forms.user import RegisterForm, LoginForm
 from forms.jobs import JobsForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
@@ -66,9 +65,10 @@ def login():
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
+
 @app.route('/jobs', methods=['GET', 'POST'])
 @login_required
-def add_news():
+def add_jobs():
     form = JobsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -82,20 +82,6 @@ def add_news():
         return redirect('/')
     return render_template('jobs.html', title='Добавление новости',
                            form=form)
-
-
-
-
-# def main():
-#     db_sess = db_session.create_session()
-#     job = Jobs()
-#     job.team_leader = 2
-#     job.job = 'Сидеть на попе ровно'
-#     job.work_size = 1000
-#     job.collaborators = 'all users'
-#     job.is_finished = False
-#     db_sess.add(job)
-#     db_sess.commit()
 
 
 if __name__ == '__main__':
