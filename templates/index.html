@@ -23,6 +23,15 @@
                     <td>{{ item.collaborators }}</td>
                     <td>{{ "Is not finished" if not item.is_finished else "Is finished"}}</td>
                 </tr>
+                <tr>
+
+                    <td><a href="/jobs/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a></td>
+                    <td><a href="/jobs/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a></td>
+                </tr>
                 </tbody>
             </table>
         </div>
