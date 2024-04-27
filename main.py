@@ -145,7 +145,7 @@ def departments():
 
 @app.route('/add_department', methods=['GET', 'POST'])
 @login_required
-def add_jobs():
+def add_department():
     form = DepartmentsForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
