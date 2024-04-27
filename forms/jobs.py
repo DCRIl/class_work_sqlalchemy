@@ -8,5 +8,5 @@ class JobsForm(FlaskForm):
     title = StringField('Заголовок', validators=[DataRequired()])
     content = TextAreaField("Содержание")
     collaborators = TextAreaField("Помощники")
-    is_finished = BooleanField("Личное")
+    is_finished = BooleanField("Закончена")
     submit = SubmitField('Применить')

@@ -8,29 +8,34 @@
         {{ form.title.label }}<br>
         {{ form.title(class="form-control") }}<br>
         {% for error in form.title.errors %}
-            <p class="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
+    <p class="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
     </p>
     <p>
         {{ form.content.label }}<br>
         {{ form.content(class="form-control") }}<br>
         {% for error in form.content.errors %}
-            <p content="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
+    <p content="alert alert-danger" role="alert">
+        {{ error }}
+    </p>
+    {% endfor %}
     </p>
     <p>
         {{ form.collaborators.label }}<br>
         {{ form.collaborators(class="form-control") }}<br>
         {% for error in form.collaborators.errors %}
-            <p content="alert alert-danger" role="alert">
-                {{ error }}
-            </p>
-        {% endfor %}
+    <p content="alert alert-danger" role="alert">
+        {{ error }}
     </p>
+    {% endfor %}
+    </p>
+    <datalist id="category">
+        {% for opt in option %}
+        <option value="{{ opt.name }}"></option>
+        {% endfor %}
+    </datalist>
     <p>{{ form.is_finished() }} {{ form.is_finished.label }}</p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}

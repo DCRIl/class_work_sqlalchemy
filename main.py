@@ -3,9 +3,11 @@ from data import db_session
 from data.users import User
 from data.jobs import Jobs
 from data.department import Departments
+from data.category import Category
 from forms.user import RegisterForm, LoginForm
 from forms.jobs import JobsForm
 from forms.departments import DepartmentsForm
+from forms.category import CategoryForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
@@ -72,18 +74,20 @@ def login():
 @login_required
 def add_jobs():
     form = JobsForm()
+    db_sess = db_session.create_session()
+    options = db_sess.query(Category).all()
     if form.validate_on_submit():
-        db_sess = db_session.create_session()
         jobs = Jobs()
         jobs.job = form.title.data
         jobs.content = form.content.data
         jobs.collaborators = form.collaborators.data
+        jobs.categories = request.form["category"]
         jobs.is_finished = form.is_finished.data
         db_sess.add(jobs)
         db_sess.commit()
         return redirect('/')
     return render_template('jobs.html', title='Добавление новости',
-                           form=form)
+                           form=form, options=options)
 
 
 @app.route('/jobs/<int:id>', methods=['GET', 'POST'])
@@ -98,6 +102,7 @@ def edit_jobs(id):
         if jobs:
             form.title.data = jobs.title
             form.content.data = jobs.content
+            request.form["category"] = jobs.category
             form.is_finished.data = jobs.is_finished
         else:
             abort(404)
@@ -109,6 +114,7 @@ def edit_jobs(id):
         if jobs:
             jobs.title = form.title.data
             jobs.content = form.content.data
+            jobs.categories = request.form["category"]
             jobs.is_finished = form.is_finished.data
             db_sess.commit()
             return redirect('/')
@@ -210,6 +216,21 @@ def department_delete(id):
     else:
         abort(404)
     return redirect('/')
+
+
+@app.route('/add_category', methods=['GET', 'POST'])
+@login_required
+def add_category():
+    form = CategoryForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        category = Category()
+        category.name = form.name
+        db_sess.add(category)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('category.html', title='Добавление категории',
+                           form=form)
 
 
 

@@ -2,6 +2,8 @@
 
 {% block content %}
     <a class="btn btn-secondary" href="/departments">Департаменты</a>
+    <p>У меня по какой-то неведомой причине бывает ошибка в db_session и я не могу сам проверить и заполнить, поэтому прошу вас опробовать</p>
+    <a class="btn btn-secondary" href="/add_category">Добавить категорию</a>
     <h3>Записи в блоге</h3>
     {% for item in jobs %}
         <h4>Action #{{ item.id }}</h4>
@@ -13,6 +15,7 @@
                     <th scope="col">Team Leader</th>
                     <th scope="col">Duration</th>
                     <th scope="col">List of collaborators</th>
+                    <th scope="col">Hazard Category</th>
                     <th scope="col">Is finished</th>
                 </tr>
                 </thead>
@@ -22,6 +25,7 @@
                     <td>{{ item.user.surname }} {{ item.user.name }}</td>
                     <td>{{ item.work_size }}</td>
                     <td>{{ item.collaborators }}</td>
+                    <td>{{ item.category.name }}</td>
                     <td>{{ "Is not finished" if not item.is_finished else "Is finished"}}</td>
                 </tr>
                 <tr>
