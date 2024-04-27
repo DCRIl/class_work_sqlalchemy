@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <a class="btn btn-secondary" href="/departments">Департаменты</a>
     <h3>Записи в блоге</h3>
     {% for item in jobs %}
         <h4>Action #{{ item.id }}</h4>
@@ -28,7 +29,7 @@
                     <td><a href="/jobs/{{ item.id }}" class="btn btn-warning">
             Изменить
         </a></td>
-                    <td><a href="/jobs/{{ item.id }}" class="btn btn-danger">
+                    <td><a href="/jobs_delete/{{ item.id }}" class="btn btn-danger">
             Удалить
         </a></td>
                 </tr>
