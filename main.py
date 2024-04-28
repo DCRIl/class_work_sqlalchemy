@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, abort
-from data import db_session, jobs_api,user_api, user_resources
+from data import db_session, jobs_api,user_api, user_resources, jobs_resources
 from data.users import User
 from data.jobs import Jobs
 from data.department import Departments
@@ -256,6 +256,8 @@ if __name__ == '__main__':
     db_session.global_init("db/colonists.db")
     app.register_blueprint(jobs_api.blueprint)
     app.register_blueprint(user_api.blueprint)
-    api.add_resource(user_resources.NewsListResource, '/api/v2/users')
-    api.add_resource(user_resources.NewsResource, '/api/v2/user/<int:id>')
+    api.add_resource(user_resources.UserListResource, '/api/v2/users')
+    api.add_resource(user_resources.UserResource, '/api/v2/user/<int:id>')
+    api.add_resource(jobs_resources.JobsListResource, '/api/v2/jobs')
+    api.add_resource(jobs_resources.JobsResource, '/api/v2/job/<int:id>')
     app.run()
