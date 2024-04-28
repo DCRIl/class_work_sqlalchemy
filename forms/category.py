@@ -5,5 +5,5 @@ from wtforms.validators import DataRequired
 
 
 class CategoryForm(FlaskForm):
-    name = StringField('Название Категории', validators=[DataRequired()])
+    name = StringField('Название Категории')
     submit = SubmitField('Применить')

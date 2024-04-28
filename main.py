@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, abort
-from data import db_session
+from data import db_session, jobs_api,user_api
 from data.users import User
 from data.jobs import Jobs
 from data.department import Departments
@@ -30,6 +30,16 @@ def index():
     return render_template("index.html", jobs=jobs)
 
 
+@app.route("/users_show/<int:id>")
+def show_user(id):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).get(id)
+    if user:
+        return render_template("user_city.html", user=user, title="Ностальгия")
+    else:
+        return "Пользователь не найден"
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -45,8 +55,7 @@ def register():
                                    message="Такой пользователь уже есть")
         user = User(
             name=form.name.data,
-            email=form.email.data,
-            about=form.about.data
+            email=form.email.data
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -81,13 +90,13 @@ def add_jobs():
         jobs.job = form.title.data
         jobs.content = form.content.data
         jobs.collaborators = form.collaborators.data
-        jobs.categories = request.form["category"]
+        jobs.categories.append(db_sess.query(Category).filter(Category.name == request.form["category"]).first().id)
         jobs.is_finished = form.is_finished.data
         db_sess.add(jobs)
         db_sess.commit()
         return redirect('/')
     return render_template('jobs.html', title='Добавление новости',
-                           form=form, options=options)
+                           form=form, option=options)
 
 
 @app.route('/jobs/<int:id>', methods=['GET', 'POST'])
@@ -225,7 +234,7 @@ def add_category():
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         category = Category()
-        category.name = form.name
+        category.name = form.name.data
         db_sess.add(category)
         db_sess.commit()
         return redirect('/')
@@ -233,7 +242,16 @@ def add_category():
                            form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
 
 if __name__ == '__main__':
     db_session.global_init("db/colonists.db")
+    app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(user_api.blueprint)
     app.run()

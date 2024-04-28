@@ -31,11 +31,12 @@
     </p>
     {% endfor %}
     </p>
-    <datalist id="category">
+    <select id="category">
         {% for opt in option %}
-        <option value="{{ opt.name }}"></option>
+        <option value="{{ opt.name }}">{{ opt.name }}</option>
         {% endfor %}
-    </datalist>
+    </select>
+    <br>
     <p>{{ form.is_finished() }} {{ form.is_finished.label }}</p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
