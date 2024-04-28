@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, abort
-from data import db_session, jobs_api,user_api
+from data import db_session, jobs_api,user_api, user_resources
 from data.users import User
 from data.jobs import Jobs
 from data.department import Departments
@@ -9,9 +9,11 @@ from forms.jobs import JobsForm
 from forms.departments import DepartmentsForm
 from forms.category import CategoryForm
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_restful import reqparse, abort, Api, Resource
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+api = Api(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -254,4 +256,6 @@ if __name__ == '__main__':
     db_session.global_init("db/colonists.db")
     app.register_blueprint(jobs_api.blueprint)
     app.register_blueprint(user_api.blueprint)
+    api.add_resource(user_resources.NewsListResource, '/api/v2/users')
+    api.add_resource(user_resources.NewsResource, '/api/v2/user/<int:id>')
     app.run()

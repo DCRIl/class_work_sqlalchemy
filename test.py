@@ -1,18 +1,24 @@
-from requests import get, post
+from requests import get, post, delete
 
-print(post('http://127.0.0.1:5000/api/jobs/1', json={'team_leader': 1, "job": "НЕругаться за списывание",
-                                                   "work_size": 10 ** 10, "content": "НЕнужно НИКОГДА ругаться",
-                                                   "collaborators": "", "is_finished": True, "categories": 2}))
+print(get('http://127.0.0.1:5000/api/v2/users'))
+print(get('http://127.0.0.1:5000/api/v2/user')) # ошибка, нет такой страницы
+print(get('http://127.0.0.1:5000/api/v2/user/1'))
+print(get('http://127.0.0.1:5000/api/v2/user/-1')) # ошибка, нет такого id
+print(get('http://127.0.0.1:5000/api/v2/user/ф')) # ошибка, не корректный id
+a = {"surname": "ABA",
+     "name": "CABA",
+     "age": 15,
+     "position": "В активном поиске",
+     "speciality": "Боб строитель",
+     "address": "Улица Ежёва, дом Пиражёва",
+     "email": "abacaba@gmail.com",
+     "city_from": "Владикавказ"}
+print(post("http://127.0.0.1:5000/api/v2/users", json=a))
+print(post("http://127.0.0.1:5000/api/v2/users", json={})) # ошибка, пустой запрос
+print(delete("http://127.0.0.1:5000/api/v2/users/2"))
+print(delete("http://127.0.0.1:5000/api/v2/users/2"))  # ошибка, пользователь уже удалён
+print(delete("http://127.0.0.1:5000/api/v2/users/100"))  # ошибка, пользователя с таким id нет
 
-print(post('http://127.0.0.1:5000/api/jobs/1000', json={}).json())
-# пустой запрос + работы с таким id нет
-
-print(post('http://127.0.0.1:5000/api/jobs/1', json={'team_leader': "1", "job": "Ругаться за списывание",
-                                                   "work_size": 10 ** 10, "content": "Нужно иногда ругаться чтоб не втыкали",
-                                                   "collaborators": None, "is_finished": "False", "categories": 1}).json())
-# некорректные данные
-
-print(get('http://127.0.0.1:5000/api/jobs').json())
 
 
 

@@ -42,7 +42,7 @@ def create_user():
     if not request.json:
         return make_response(jsonify({'error': 'Empty request'}), 400)
     elif not all(key in request.json for key in
-                 ["surname", "name", "age", "position", "speciality", "address", "email"]):
+                 ["surname", "name", "age", "position", "speciality", "address", "email", "city_from"]):
         return make_response(jsonify({'error': 'Bad request'}), 400)
     db_sess = db_session.create_session()
     users = User()
@@ -53,6 +53,7 @@ def create_user():
     users.speciality = request.json['speciality']
     users.address = request.json['address']
     users.email = request.json['email']
+    users.city_from = request.json['city_from']
     db_sess.add(users)
     db_sess.commit()
     return jsonify({'id': users.id})
